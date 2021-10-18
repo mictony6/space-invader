@@ -12,7 +12,6 @@ class Player:
         self.canvas = canvas
         self.changeX = 0
         self.changeY = 0
-        self.score = 0
 
     def clamp(self):
         if self.x > 800 or self. x < 0 or self.y > 600 or self.y < 0:
@@ -25,6 +24,12 @@ class Player:
     def move(self):
         self.x += self.changeX
         self.y += self.changeY
+
+    def isColliding(self, object):
+        x = self.x - object.x
+        y = self.y - object.y
+        distance = sqrt(x*x + y*y)
+        return distance < 16
 
 
 class Enemy:
@@ -67,7 +72,7 @@ class Bullet:
         self.image = pygame.image.load(image).convert_alpha()
         self.canvas = canvas
         self.changeX = 0
-        self.changeY = -.7
+        self.changeY = -1
         self.state = False
 
     def drawBullet(self, x, y):
