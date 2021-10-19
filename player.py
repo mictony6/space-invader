@@ -1,6 +1,7 @@
 import pygame
 import random
 from math import sqrt
+
 pygame.init()
 
 
@@ -12,9 +13,10 @@ class Player:
         self.canvas = canvas
         self.changeX = 0
         self.changeY = 0
+        self.restricted = False
 
     def clamp(self):
-        if self.x > 800 or self. x < 0 or self.y > 600 or self.y < 0:
+        if self.x > 800 or self.x < 0 or self.y > 600 or self.y < 0:
             self.x = self.x % 800
             self.y = self.y % 600
 
@@ -25,7 +27,8 @@ class Player:
         self.x += self.changeX
         self.y += self.changeY
 
-
+    def restrict(self):
+        self.restricted = True
 class Enemy:
     def __init__(self, image, canvas):
         self.x = random.randint(0, 800)
@@ -36,7 +39,7 @@ class Enemy:
         self.changeY = 0
 
     def clamp(self):
-        if self.x > 800-32:
+        if self.x > 800 - 32:
             self.changeY = .07
             self.changeX = -.2
         elif self.x < 0:
@@ -72,7 +75,7 @@ class Bullet:
     def draw_bullet(self, x, y):
         self.x = x
         self.y = y
-        self.canvas.blit(self.image, (self.x+16, self.y))
+        self.canvas.blit(self.image, (self.x + 16, self.y))
 
     def move(self):
         self.x += self.changeX

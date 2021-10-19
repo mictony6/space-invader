@@ -1,4 +1,5 @@
 import pygame
+
 pygame.init()
 
 
@@ -19,10 +20,6 @@ class System:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-
-    def is_running(self):
-        pygame.display.update()
-        return self.running
 
     def update_score(self):
         self.score += 1
