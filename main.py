@@ -1,8 +1,8 @@
 from player import Player, Enemy, Bullet, Ship
 from system import System
 import random
-import pygame
 import pygame.freetype
+import pygame
 pygame.init()
 font = pygame.freetype.Font('segoe.ttf', 30)
 
@@ -90,22 +90,22 @@ while isRunning:
     n = 0
     for enemy in enemies:
         enemy.move()
-        if enemy.isOut():
+        if enemy.is_out():
             isRunning = False
         enemy.clamp()
-        enemy.drawEnemy()
+        enemy.draw_enemy()
         n += 1
     n = 0
     for bullet in shots:
 
         if bullet.state:
             bullet.move()
-            bullet.drawBullet(bullet.x, bullet.y)
+            bullet.draw_bullet(bullet.x, bullet.y)
         for enemy in enemies:
-            if bullet.isColliding(enemy):
+            if bullet.is_colliding(enemy):
                 bullet.state = False
                 enemy.respawn()
-                system.updateScore()
+                system.update_score()
         if bullet.y <= 0 or not bullet.state:
             shots.pop(n)
             count -= 1
@@ -113,23 +113,23 @@ while isRunning:
 
     player.clamp()
     for ship in ships:
-        ship.drawPlayer()
+        ship.draw_player()
         ship.move()
-        if ship.isColliding(player):
+        if ship.is_colliding(player):
             isRunning = False
         if ship.y >= 600:
             ship.x = random.randint(0, 100)*6
             ship.y = 0
             ship.changeY = .5/random.randint(1, 10)
-    player.drawPlayer()
+    player.draw_player()
 
     pygame.display.update()
 
 score, rect = font.render(f'Score: {system.score}',  (0, 0, 0))
 
-game_over, rect = font.render('Game Over!',  (0, 0, 0))
-while system.isRunning():
+game_over, new_rect = font.render('Game Over!',  (0, 0, 0))
+while system.is_running():
     system.fill((255, 255, 255))
     system.blit(game_over, (320, 290))
     system.blit(score, (345, 325))
-    system.getKey()
+    system.get_key()

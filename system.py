@@ -1,7 +1,4 @@
-
-
 import pygame
-from pygame import rect
 pygame.init()
 
 
@@ -18,14 +15,14 @@ class System:
     def blit(self, textsurface, location):
         self.canvas.blit(textsurface, location)
 
-    def getKey(self):
+    def get_key(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
-    def isRunning(self):
+    def is_running(self):
         pygame.display.update()
         return self.running
 
-    def updateScore(self):
+    def update_score(self):
         self.score += 1

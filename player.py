@@ -18,7 +18,7 @@ class Player:
             self.x = self.x % 800
             self.y = self.y % 600
 
-    def drawPlayer(self):
+    def draw_player(self):
         self.canvas.blit(self.image, (self.x, self.y))
 
     def move(self):
@@ -43,14 +43,14 @@ class Enemy:
             self.changeY = .07
             self.changeX = .2
 
-    def drawEnemy(self):
+    def draw_enemy(self):
         self.canvas.blit(self.image, (self.x, self.y))
 
     def move(self):
         self.x += self.changeX
         self.y += self.changeY
 
-    def isOut(self):
+    def is_out(self):
         return self.y > 600
 
     def respawn(self):
@@ -69,7 +69,7 @@ class Bullet:
         self.changeY = -1
         self.state = False
 
-    def drawBullet(self, x, y):
+    def draw_bullet(self, x, y):
         self.x = x
         self.y = y
         self.canvas.blit(self.image, (self.x+16, self.y))
@@ -78,10 +78,10 @@ class Bullet:
         self.x += self.changeX
         self.y += self.changeY
 
-    def isColliding(self, object):
-        x = self.x - object.x
-        y = self.y - object.y
-        distance = sqrt(x*x + y*y)
+    def is_colliding(self, obj):
+        x = self.x - obj.x
+        y = self.y - obj.y
+        distance = sqrt(x * x + y * y)
         return distance < 32
 
 
@@ -89,8 +89,8 @@ class Ship(Player):
     def __init__(self, image, canvas):
         super().__init__(image, canvas)
 
-    def isColliding(self, object):
-        x = self.x - object.x
-        y = self.y - object.y
-        distance = sqrt(x*x + y*y)
+    def is_colliding(self, obj):
+        x = self.x - obj.x
+        y = self.y - obj.y
+        distance = sqrt(x * x + y * y)
         return distance < 16
