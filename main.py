@@ -1,5 +1,4 @@
-from pygame.event import event_name
-from player import Player, Enemy, Bullet
+from player import Player, Enemy, Bullet, Ship
 from system import System
 import random
 import pygame
@@ -23,7 +22,7 @@ isRunning = True
 player = Player("images/player.png", screen)
 ships = []
 for i in range(5):
-    ships.append(Player("images/icon.png", screen))
+    ships.append(Ship("images/icon.png", screen))
 for ship in ships:
     ship.x = random.randint(0, 600)
     ship.y = random.randint(-50, 0)
@@ -107,7 +106,7 @@ while isRunning:
                 bullet.state = False
                 enemy.respawn()
                 system.updateScore()
-        if bullet.y <= 0 or bullet.state == False:
+        if bullet.y <= 0 or not bullet.state:
             shots.pop(n)
             count -= 1
             n += 1

@@ -25,12 +25,6 @@ class Player:
         self.x += self.changeX
         self.y += self.changeY
 
-    def isColliding(self, object):
-        x = self.x - object.x
-        y = self.y - object.y
-        distance = sqrt(x*x + y*y)
-        return distance < 16
-
 
 class Enemy:
     def __init__(self, image, canvas):
@@ -89,3 +83,14 @@ class Bullet:
         y = self.y - object.y
         distance = sqrt(x*x + y*y)
         return distance < 32
+
+
+class Ship(Player):
+    def __init__(self, image, canvas):
+        super().__init__(image, canvas)
+
+    def isColliding(self, object):
+        x = self.x - object.x
+        y = self.y - object.y
+        distance = sqrt(x*x + y*y)
+        return distance < 16
