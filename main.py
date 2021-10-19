@@ -3,7 +3,7 @@ from system import System
 import random
 import pygame.freetype
 import pygame
-
+clock = pygame.time.Clock()
 pygame.init()
 font = pygame.freetype.Font('segoe.ttf', 30)
 
@@ -16,7 +16,8 @@ icon = pygame.image.load("images/icon.png")
 pygame.display.set_icon(icon)
 
 isRunning = True
-
+elapsed = 0
+seconds = 0.016
 # player and enemy instances
 player = Player("images/player.png", screen)
 ships = []
@@ -25,7 +26,7 @@ for i in range(5):
 for ship in ships:
     ship.x = random.randint(1, 10)*60
     ship.y = random.randint(-50, 0)
-    ship.changeY = .5 / random.randint(1, 10)
+    ship.changeY = random.randint(1, 10)*30
 # enemy = Enemy("enemy.png", screen)
 
 # declaring a list for the bullets
@@ -57,17 +58,16 @@ while system.running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             system.running = False
-
         # detecting movement input
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                player.changeY = -.5
+                player.changeY = -300
             if event.key == pygame.K_s:
-                player.changeY = .5
+                player.changeY = 300
             if event.key == pygame.K_a:
-                player.changeX = -.5
+                player.changeX = -600
             if event.key == pygame.K_d:
-                player.changeX = .5
+                player.changeX = 600
             if event.key == pygame.K_SPACE:
                 # have multiple bullet instances using a list
 
@@ -92,13 +92,13 @@ while system.running:
     if not player.restricted:
 
         player.clamp()
-        player.move()
+        player.move(seconds)
     n = 0
     score, rect = font.render(f'Score: {system.score}', (0, 0, 0))
     game_over, new_rect = font.render('Game Over!', (0, 0, 0))
     if not player.restricted:
         for enemy in enemies:
-            enemy.move()
+            enemy.move(seconds)
             if enemy.is_out():
                 player.restrict()
                 for i in ships:
@@ -110,7 +110,7 @@ while system.running:
     for ship in ships:
         if not ship.restricted:
             ship.draw_player()
-            ship.move()
+            ship.move(seconds)
         else:
             for item in ships:
                 item.restrict()
@@ -121,14 +121,13 @@ while system.running:
         if ship.y >= 600:
             ship.x = random.randint(1, 10) * 60
             ship.y = 0
-            ship.changeY = .5 / random.randint(1, 10)
-
+            ship.changeY = random.randint(1, 10)*30
     n = 0
     for bullet in shots:
 
         if bullet.state:
             if not player.restricted:
-                bullet.move()
+                bullet.move(seconds)
                 bullet.draw_bullet(bullet.x, bullet.y)
         for enemy in enemies:
             if bullet.is_colliding(enemy):
@@ -142,5 +141,6 @@ while system.running:
 
     if not player.restricted:
         player.draw_player()
-
+    elapsed = clock.tick(60)
+    seconds = elapsed/1000.0
     pygame.display.update()

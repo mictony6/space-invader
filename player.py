@@ -23,35 +23,37 @@ class Player:
     def draw_player(self):
         self.canvas.blit(self.image, (self.x, self.y))
 
-    def move(self):
-        self.x += self.changeX
-        self.y += self.changeY
+    def move(self, seconds):
+        self.x += self.changeX*seconds
+        self.y += self.changeY*seconds
 
     def restrict(self):
         self.restricted = True
+
+
 class Enemy:
     def __init__(self, image, canvas):
         self.x = random.randint(0, 800)
         self.y = random.randint(50, 200)
         self.image = pygame.image.load(image).convert_alpha()
         self.canvas = canvas
-        self.changeX = .3
+        self.changeX = 150
         self.changeY = 0
 
     def clamp(self):
         if self.x > 800 - 32:
-            self.changeY = .07
-            self.changeX = -.2
+            self.changeY = 50
+            self.changeX = -150
         elif self.x < 0:
-            self.changeY = .07
-            self.changeX = .2
+            self.changeY = 50
+            self.changeX = 150
 
     def draw_enemy(self):
         self.canvas.blit(self.image, (self.x, self.y))
 
-    def move(self):
-        self.x += self.changeX
-        self.y += self.changeY
+    def move(self, seconds):
+        self.x += self.changeX*seconds
+        self.y += self.changeY*seconds
 
     def is_out(self):
         return self.y > 600
@@ -69,7 +71,7 @@ class Bullet:
         self.image = pygame.image.load(image).convert_alpha()
         self.canvas = canvas
         self.changeX = 0
-        self.changeY = -1
+        self.changeY = -1000
         self.state = False
 
     def draw_bullet(self, x, y):
@@ -77,9 +79,9 @@ class Bullet:
         self.y = y
         self.canvas.blit(self.image, (self.x + 16, self.y))
 
-    def move(self):
-        self.x += self.changeX
-        self.y += self.changeY
+    def move(self, seconds):
+        self.x += self.changeX*seconds
+        self.y += self.changeY*seconds
 
     def is_colliding(self, obj):
         x = self.x - obj.x
