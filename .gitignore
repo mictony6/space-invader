@@ -21,3 +21,4 @@ dist/main.exe
 dist/*
 /dist/space_invaders_v0.9.0.zip
 dist/space_invaders_v1.0.0.zip
+test_file.py
