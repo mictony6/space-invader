@@ -96,14 +96,14 @@ while system.running:
     n = 0
     score, rect = font.render(f'Score: {system.score}', (0, 0, 0))
     game_over, new_rect = font.render('Game Over!', (0, 0, 0))
-    if not player.restricted:
-        for enemy in enemies:
-            enemy.move(seconds)
-            if enemy.is_out():
-                player.restrict()
-                for i in ships:
-                    i.restrict()
-                game_over_screen()
+    for enemy in enemies:
+        enemy.move(seconds)
+        if enemy.is_out():
+            player.restrict()
+            for i in ships:
+                i.restrict()
+            game_over_screen()
+        else:
             enemy.clamp()
             enemy.draw_enemy()
             n += 1
