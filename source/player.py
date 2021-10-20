@@ -87,7 +87,7 @@ class Bullet:
         x = self.x - obj.x
         y = self.y - obj.y
         distance = sqrt(x * x + y * y)
-        return distance < 32
+        return -32 < distance < 32
 
 
 class Ship(Player):
@@ -98,4 +98,4 @@ class Ship(Player):
         x = self.x - obj.x
         y = self.y - obj.y
         distance = sqrt(x * x + y * y)
-        return distance < 16
+        return -16 < distance < 16
