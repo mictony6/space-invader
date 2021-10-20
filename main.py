@@ -2,10 +2,19 @@ from player import *
 from system import System
 import random
 import pygame.freetype
+from pygame import mixer
 import pygame
 
 
 def main():
+    # bg sound
+    mixer.music.load("./sounds/space.wav")
+    mixer.music.play(-1)
+    mixer.music.set_volume(.25)
+    bullet_sound = mixer.Sound("./sounds/shoo.wav")
+    bullet_sound.set_volume(.25)
+    hit_sound = mixer.Sound("./sounds/hit.wav")
+    hit_sound.set_volume(.25)
 
     clock = pygame.time.Clock()
     pygame.init()
@@ -69,8 +78,8 @@ def main():
                     player.changeX = 600
                 if event.key == pygame.K_SPACE:
                     # have multiple bullet instances using a list
-
                     if count == 0:
+                        bullet_sound.play()
                         shots.append(
                             Bullet(player.x, player.y, "./images/bullet.png", screen))
                         shots[count].state = True
@@ -80,6 +89,7 @@ def main():
 
                     # if the last bullet is still firing, create a new instance instead
                     elif shots[count - 1].state:
+                        bullet_sound.play()
                         shots.append(
                             Bullet(player.x, player.y, "./images/bullet.png", screen))
                         shots[count].state = True
@@ -131,6 +141,7 @@ def main():
                     bullet.draw_bullet(bullet.x, bullet.y)
             for enemy in enemies:
                 if bullet.is_colliding(enemy):
+                    hit_sound.play()
                     bullet.state = False
                     enemy.respawn()
                     system.update_score()
