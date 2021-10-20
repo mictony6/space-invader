@@ -1,6 +1,19 @@
 import pygame
+import sys
+import os
 
 pygame.init()
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 class System:
@@ -8,7 +21,7 @@ class System:
         self.running = running
         self.canvas = pygame.display.set_mode((width, height))
         self.score = 0
-        self.font = pygame.freetype.Font('segoe.ttf', 30)
+        self.font = pygame.freetype.Font(resource_path('segoe.ttf'), 30)
 
     def fill(self, color):
         self.canvas.fill(color)

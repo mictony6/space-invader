@@ -1,39 +1,52 @@
 from player import *
 from system import System
 import random
+import os
+import sys
 import pygame.freetype
 from pygame import mixer
 import pygame
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def main():
     # bg sound
-    mixer.music.load("./sounds/space.wav")
+    mixer.music.load(resource_path("./sounds/space.wav"))
     mixer.music.play(-1)
     mixer.music.set_volume(.25)
-    bullet_sound = mixer.Sound("./sounds/shoo.wav")
+    bullet_sound = mixer.Sound(resource_path("./sounds/shoo.wav"))
     bullet_sound.set_volume(.25)
-    hit_sound = mixer.Sound("./sounds/hit.wav")
+    hit_sound = mixer.Sound(resource_path("./sounds/hit.wav"))
     hit_sound.set_volume(.25)
 
     clock = pygame.time.Clock()
     pygame.init()
-    font = pygame.freetype.Font('./segoe.ttf', 30)
+    font = pygame.freetype.Font(resource_path("./segoe.ttf"), 30)
 
     screen = pygame.display.set_mode((800, 600))
     system = System(800, 600)
     # game title and icon
 
     pygame.display.set_caption("Space Invaders")
-    icon = pygame.image.load("./images/icon.png")
+    icon = pygame.image.load(resource_path("./images/icon.png"))
     pygame.display.set_icon(icon)
 
     seconds = 0.016
     # player and enemy instances
-    player = Player("./images/player.png", screen)
+    player = Player(resource_path("./images/player.png"), screen)
     ships = []
     for i in range(5):
-        ships.append(Ship("./images/icon.png", screen))
+        ships.append(Ship(resource_path("./images/icon.png"), screen))
     for ship in ships:
         ship.x = random.randint(1, 10) * 60
         ship.y = random.randint(-50, 0)
@@ -46,7 +59,7 @@ def main():
     enemies = []
     enemy_count = 5
     for i in range(enemy_count):
-        enemies.append(Enemy("./images/enemy.png", screen))
+        enemies.append(Enemy(resource_path("./images/enemy.png"), screen))
 
     def game_over_screen():
         system.fill((255, 255, 255))
@@ -54,7 +67,7 @@ def main():
         system.blit(score, (345, 325))
 
     # loading the background image
-    bg = pygame.image.load("./images/background.png").convert()
+    bg = pygame.image.load(resource_path("./images/background.png")).convert()
     # game loop
     while system.running:
         display_score, rect = font.render(
@@ -81,7 +94,7 @@ def main():
                     if count == 0:
                         bullet_sound.play()
                         shots.append(
-                            Bullet(player.x, player.y, "./images/bullet.png", screen))
+                            Bullet(player.x, player.y, resource_path("./images/bullet.png"), screen))
                         shots[count].state = True
                         shots[count].x = player.x
                         shots[count].y = player.y
@@ -91,7 +104,7 @@ def main():
                     elif shots[count - 1].state:
                         bullet_sound.play()
                         shots.append(
-                            Bullet(player.x, player.y, "./images/bullet.png", screen))
+                            Bullet(player.x, player.y, resource_path("./images/bullet.png"), screen))
                         shots[count].state = True
                         count += 1
 
