@@ -103,7 +103,7 @@ while system.running:
             for i in ships:
                 i.restrict()
             game_over_screen()
-        else:
+        elif not player.restricted:
             enemy.clamp()
             enemy.draw_enemy()
             n += 1
